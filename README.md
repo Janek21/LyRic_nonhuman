@@ -47,6 +47,6 @@ cd lyric_test
 The pipeline repository contains a small datasets that can be used for testing. You can run the pipeline on the test dataset with the following command:
 
 ```
-snakemake
+snakemake --cores all
 ```
 Execution shall take < half an hour.
