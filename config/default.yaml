@@ -1,25 +1,23 @@
 capDesignToGenome:
-  HpreCap: hg38_chr12
+  HpreCap: shortname
 CAPTURE: false
-GENOMESDIR: resources/test-data/fasta/
-DATADIR: resources/test-data/fastq/
-produceStatPlots: true
+GENOMESDIR: data/fasta/
+DATADIR: data/fastq/
+produceStatPlots: false
 produceTrackHub: false
 produceHtmlStatsTable: false
-SAMPLE_ANNOT: resources/test-data/sample_annotations.tsv
+SAMPLE_ANNOT: data/sample_annotations.tsv
 sampleRepGroupBy:
   - seqPlatform
   - cellLine
 USE_MATCHED_ILLUMINA: false
-PROJECT_NAME: Lyric-testRestricted
+PROJECT_NAME: shortname_jan
 genomeToCAGEpeaks:
-  hg38_chr12: resources/test-data/input/hg38_fair+new_CAGE_peaks_phase1and2.chr12_25Mto50M.bed
+  shortname: data/input/fakeCAGE.bed
 genomeToAnnotGtf:
-  hg38_chr12: resources/test-data/input/gencode.v47.primary_assembly.annotation.chr12_25Mto50M.gtf
+  shortname: data/input/Annotation.gtf
 genomeToDHSpeaks:
-  hg38_chr12: resources/test-data/input/ENCFF301VRH.hg38.sorted.chr12_25Mto50M.bed
+  shortname: data/input/fakeDHS.bed
 minimumTmergeReadSupport:
   - "2"
 exonOverhangTolerance: "8"
-PROJECT_LONG_NAME: LyRic samples on the testRestricted hg38
-PROJECT_CONTACT_EMAIL: fabien.degalez@crg.eu
