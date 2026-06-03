@@ -201,7 +201,9 @@ rule makePolyABigWigs:
         """
 tmpIn=$(uuidgen)
 uuidTmpOut=$(uuidgen)
-cat {input.sites} | {{ grep -P "^chr" | grep -v "chrIS" || [ "$?" -eq 1 ]; }} > {TMPDIR}/$tmpIn
+uuidChr=$(uuidgen)
+cat {input.genome} | cut -f1 | {{ grep -vP "{SPIKEIN_CONTIG_REGEX}" || [ "$?" -eq 1 ]; }} | sort -T {TMPDIR} | uniq > {TMPDIR}/$uuidChr
+cat {input.sites} | awk -F'\t' 'NR==FNR{{keep[$1]=1; next}} ($1 in keep)' {TMPDIR}/$uuidChr - > {TMPDIR}/$tmpIn
 
 
 bedtools genomecov -strand {wildcards.strand} -split -bg -i {TMPDIR}/$tmpIn -g {input.genome} > {TMPDIR}/$uuidTmpOut.bedgraph

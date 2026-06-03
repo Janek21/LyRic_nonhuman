@@ -21,3 +21,7 @@ genomeToDHSpeaks:
 minimumTmergeReadSupport:
   - "2"
 exonOverhangTolerance: "8"
+# grep -P regex matching spike-in contig names to drop from track hub outputs.
+# Real chromosomes are detected from the genome/BAM reference names themselves,
+# so no "chr" prefix is assumed. Override if your spike-ins are named differently.
+spikeInContigRegex: "^(ERCC|SIRV|chrIS)"

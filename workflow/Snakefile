@@ -106,6 +106,10 @@ MINIMUM_TMERGE_READ_SUPPORT = config["minimumTmergeReadSupport"]
 READFILTERS = ["HiSS", "noFilt"]
 # for tmerge:
 ExonOverhangTolerance = config["exonOverhangTolerance"]
+# Regex (grep -P) matching spike-in contig names to exclude from track hub
+# outputs. Real chromosomes are detected from the genome/BAM reference names
+# themselves (any naming convention), so this only needs to list spike-ins.
+SPIKEIN_CONTIG_REGEX = config.get("spikeInContigRegex", "^(ERCC|SIRV|chrIS)")
 
 GENOMES = []
 GENOMETOCAPDESIGNS = defaultdict(list)
