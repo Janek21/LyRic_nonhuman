@@ -48,7 +48,7 @@ rule removePolyAERCCs:
     shell:
         """
 uuidTmpOut=$(uuidgen)
-zcat {input} | fgrep -v ERCC > {TMPDIR}/$uuidTmpOut
+zcat {input} | {{ fgrep -v ERCC || [ "$?" -eq 1 ]; }} > {TMPDIR}/$uuidTmpOut
 mv {TMPDIR}/$uuidTmpOut {output}
         """
 
@@ -201,7 +201,7 @@ rule makePolyABigWigs:
         """
 tmpIn=$(uuidgen)
 uuidTmpOut=$(uuidgen)
-cat {input.sites} | grep -P "^chr" | grep -v "chrIS" > {TMPDIR}/$tmpIn
+cat {input.sites} | {{ grep -P "^chr" | grep -v "chrIS" || [ "$?" -eq 1 ]; }} > {TMPDIR}/$tmpIn
 
 
 bedtools genomecov -strand {wildcards.strand} -split -bg -i {TMPDIR}/$tmpIn -g {input.genome} > {TMPDIR}/$uuidTmpOut.bedgraph

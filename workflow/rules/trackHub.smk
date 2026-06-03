@@ -98,7 +98,7 @@ uuidTmpOutB=$(uuidgen)
 uuidTmpOutT=$(uuidgen)
 cat {input.genome} | cut -f1 | sort -T {TMPDIR}     |uniq > {TMPDIR}/$uuid2
 
-cat {input.gff} | grep -P "^chr" | grep -v "chrIS" |gff2bed_full.pl -|sort -T {TMPDIR}    -k1,1 -k2,2n -k3,3n  > {TMPDIR}/$uuid3
+cat {input.gff} | {{ grep -P "^chr" | grep -v "chrIS" || [ "$?" -eq 1 ]; }} |gff2bed_full.pl -|sort -T {TMPDIR}    -k1,1 -k2,2n -k3,3n  > {TMPDIR}/$uuid3
 join  -j1 {TMPDIR}/$uuid2 {TMPDIR}/$uuid3 |ssv2tsv > {TMPDIR}/$uuid
 bedToBigBed -as={workflow.basedir}/misc/bed12.as -type=bed12 -extraIndex=name {TMPDIR}/$uuid {input.genome} {TMPDIR}/$uuidTmpOutB
 mv {TMPDIR}/$uuidTmpOutB {output.bigBed}
@@ -151,7 +151,7 @@ rule makeHiSeqBamOutputTracks:
 uuidTmpOut=$(uuidgen)
 uuid=$(uuidgen)
 samtools view -H {input} > {TMPDIR}/$uuid
-samtools view {input} | grep -P "\tchr" | grep -v "chrIS" >> {TMPDIR}/$uuid
+samtools view {input} | {{ grep -P "\tchr" | grep -v "chrIS" || [ "$?" -eq 1 ]; }} >> {TMPDIR}/$uuid
 samtools view -b {TMPDIR}/$uuid > {TMPDIR}/$uuidTmpOut
 sleep 200s
 samtools index {TMPDIR}/$uuidTmpOut
@@ -240,7 +240,7 @@ rule makeBamOutputTracks:
 uuidTmpOut=$(uuidgen)
 uuid=$(uuidgen)
 samtools view -H {input} > {TMPDIR}/$uuid
-samtools view {input} | grep -P "\tchr" | grep -v "chrIS" >> {TMPDIR}/$uuid
+samtools view {input} | {{ grep -P "\tchr" | grep -v "chrIS" || [ "$?" -eq 1 ]; }} >> {TMPDIR}/$uuid
 samtools view -b {TMPDIR}/$uuid > {TMPDIR}/$uuidTmpOut
 sleep 200s
 samtools index {TMPDIR}/$uuidTmpOut
@@ -313,7 +313,7 @@ uuid=$(uuidgen)
 uuidTmpOutB=$(uuidgen)
 uuidTmpOutT=$(uuidgen)
 
-cat {input.bed} | grep -P "^chr" | grep -v "chrIS"  > {TMPDIR}/$uuid
+cat {input.bed} | {{ grep -P "^chr" | grep -v "chrIS" || [ "$?" -eq 1 ]; }}  > {TMPDIR}/$uuid
 bedToBigBed -as={workflow.basedir}/misc/bed12.as -type=bed12 -extraIndex=name {TMPDIR}/$uuid {input.genome} {TMPDIR}/$uuidTmpOutB
 mv {TMPDIR}/$uuidTmpOutB {output.bigBed}
 cp -f {input.gff} {output.gff}
@@ -358,7 +358,7 @@ uuid=$(uuidgen)
 uuidTmpOutB=$(uuidgen)
 uuidTmpOutT=$(uuidgen)
 
-cat {input.bed} | grep -P "^chr" | grep -v "chrIS"  > {TMPDIR}/$uuid
+cat {input.bed} | {{ grep -P "^chr" | grep -v "chrIS" || [ "$?" -eq 1 ]; }}  > {TMPDIR}/$uuid
 bedToBigBed -as={workflow.basedir}/misc/bed12.as -type=bed12 -extraIndex=name {TMPDIR}/$uuid {input.genome} {TMPDIR}/$uuidTmpOutB
 mv {TMPDIR}/$uuidTmpOutB {output.bigBed}
 cp -f {input.gff} {output.gff}

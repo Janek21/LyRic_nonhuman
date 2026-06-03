@@ -55,7 +55,7 @@ rule aggTargetCoverageStats:
         r"""
 uuidTmpOut=$(uuidgen)
 echo -e "seqTech\tcapDesign\tsizeFrac\tsampleRep\ttargetType\ttotalTargets\tdetectedTargets\tpercentDetectedTargets" > {TMPDIR}/$uuidTmpOut
-cat {input} | grep -v erccSpikein | sort -T {TMPDIR}  >> {TMPDIR}/$uuidTmpOut
+cat {input} | {{ grep -v erccSpikein || [ "$?" -eq 1 ]; }} | sort -T {TMPDIR}  >> {TMPDIR}/$uuidTmpOut
 mv {TMPDIR}/$uuidTmpOut {output}
         """
 

@@ -27,7 +27,7 @@ rule getIntronMotif:
 uuid=$(uuidgen)
 mkdir -p {TMPDIR}/$uuid
 
-zcat {input.introns} | grep -vP "^ERCC"| extract_intron_strand_motif.pl - {input.genome} {TMPDIR}/$uuid/$(basename {output.gff} .introns.gff.gz)
+zcat {input.introns} | {{ grep -vP "^ERCC" || [ "$?" -eq 1 ]; }} | extract_intron_strand_motif.pl - {input.genome} {TMPDIR}/$uuid/$(basename {output.gff} .introns.gff.gz)
 
 gzip {TMPDIR}/$uuid/*
 mv {TMPDIR}/$uuid/* $(dirname {output.gff})
