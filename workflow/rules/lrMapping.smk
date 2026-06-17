@@ -14,7 +14,7 @@ rule longReadMapping:
         + ".sorted.fa",
         qc="output/fastqs/"
         + "qc/{techname}_{capDesign}_{sizeFrac}.{sampleRep}.dupl.txt",
-    threads: 12
+    threads: workflow.cores
     params:
         minimap_preset=lambda wildcards: (
             "splice"
@@ -339,7 +339,7 @@ rule getReadProfileMatrix:
         + "byTech_{capDesign}_{sizeFrac}_{sampleRep}.readProfileMatrix.tsv.gz",
     conda:
         "../envs/xtools_env.yml"
-    threads: 6
+    threads: workflow.cores
     shell:
         """
 uuid=$(uuidgen)

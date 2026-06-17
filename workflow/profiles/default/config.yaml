@@ -6,13 +6,11 @@ local-cores: 1
 default-resources:
   runtime: 10
   mem_mb: 500
-set-threads:
-  longReadMapping: 2
 set-resources:
   sortIndexGenome:
     mem_mb: 2000
   longReadMapping:
-    cpus_per_task: 2
+    cpus_per_task: threads
     mem_mb: 5000
   bamqc:
     mem_mb: 2000

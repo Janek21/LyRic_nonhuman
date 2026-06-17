@@ -3,6 +3,7 @@ rule makeStarIndex:
         genome=config["GENOMESDIR"] + "{genome}.sorted.fa",
     output:
         config["GENOMESDIR"] + "STARshort_indices/" + "{genome}/SA",
+    threads: workflow.cores
     conda:
         "../envs/star_env.yml"
     shell:
@@ -10,7 +11,7 @@ rule makeStarIndex:
 uuid=$(uuidgen)
 mkdir -p {TMPDIR}/$uuid ;
 mkdir -p $(dirname {output});
-STAR --runMode genomeGenerate --runThreadN 3 --genomeDir {TMPDIR}/$uuid --genomeFastaFiles {input}
+STAR --runMode genomeGenerate --runThreadN {threads} --genomeDir {TMPDIR}/$uuid --genomeFastaFiles {input}
 mv -f {TMPDIR}/$uuid/* $(dirname {output})
         """
 
@@ -23,7 +24,7 @@ rule hiSeqReadMapping:
         + "STARshort_indices/"
         + CAPDESIGNTOGENOME[wildcards.capDesign]
         + "/SA",
-    threads: 12
+    threads: workflow.cores
     conda:
         "../envs/star_env.yml"
     output:
@@ -162,6 +163,7 @@ rule getHiSeqCanonicalIntronsList2:
     output:
         list="output/mappings/hiSeqIntrons/hiSeq_{capDesign}.canonicalIntrons.list",
         stats="output/statsFiles/" + "tmp/{capDesign}_tmp.hiSeq.SJs.stats.tsv",
+    threads: workflow.cores
     conda:
         "../envs/perl_env.yml"
     shell:
